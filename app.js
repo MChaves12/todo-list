@@ -6,6 +6,7 @@ const app = express();
 require('./db');
 
 //Config
+require('./configs')(app);
 
 //Routes
 
