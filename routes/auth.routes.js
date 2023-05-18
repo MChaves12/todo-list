@@ -34,6 +34,44 @@ router.post('/signup', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-})
+});
+
+router.post('/login', async(req, res, next) => {
+    const { username, password } = req.body;
+    
+    try {
+        if(!username || !password) {
+            res.status(400).json({message: 'Required fields'});
+            return;  
+        }
+        
+        const findUser = await User.findOne({ username });
+        if(!findUser) {
+            res.status(400).json({message: 'Username or password incorrect'});
+            return;
+        }
+
+        const verifyPassword = bcrypt.compareSync(password, findUser.passwordHash);
+        if(!verifyPassword) {
+            res.status(400).json({message: 'Username or password incorrect'});
+            return;
+        }
+
+        const payload = {
+            _id: findUser._id,
+            username: findUser.username 
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '6h'})
+
+        res.status(200).json({ authToken: token });
+    } catch (error) {
+        next(error)
+    }
+});
+
+router.get('/verify', (req, res, next) => {
+    res.json(req.payload);
+});
 
 module.exports = router;
