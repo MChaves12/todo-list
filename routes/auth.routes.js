@@ -2,6 +2,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
+
+//Middleware
+
+const { isAuthenticated } = require('../middlewares/jwt.middleware')
+
 const User = require('../models/User.model');
 
 router.get('/', (req, res, next) => {
@@ -70,7 +75,7 @@ router.post('/login', async(req, res, next) => {
     }
 });
 
-router.get('/verify', (req, res, next) => {
+router.get('/verify', isAuthenticated, (req, res, next) => {
     res.json(req.payload);
 });
 
