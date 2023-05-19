@@ -40,3 +40,25 @@ router.put('/:todoId', async (req, res, next) => {
     }
 });
 
+router.put('/done/:todoId', async (req, res, next) => {
+    const { todoId } = req.params;
+    const { done } = req.body;
+    try {
+        const taskDone = await Todo.findByIdAndUpdate(todoId, done, {new: true});
+        res.status(200).json(taskDone);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete('/:todoId', async(req, res, next) => {
+    const { todoId } = req.params;
+    try {
+        await Todo.findByIdAndDelete(todoId);
+        res.status(404).json();
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = router;
