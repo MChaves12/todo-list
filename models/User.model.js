@@ -18,4 +18,6 @@ const userSchema = new Schema ({
         ref: 'Todos'
     }
     
-})
+}, { timestamps: true });
+
+module.exports = model('User', userSchema);

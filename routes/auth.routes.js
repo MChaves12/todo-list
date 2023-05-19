@@ -56,7 +56,7 @@ router.post('/login', async(req, res, next) => {
             return;
         }
 
-        const verifyPassword = bcrypt.compareSync(password, findUser.passwordHash);
+        const verifyPassword = bcrypt.compareSync(password, findUser.password);
         if(!verifyPassword) {
             res.status(400).json({message: 'Username or password incorrect'});
             return;
