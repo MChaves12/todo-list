@@ -7,7 +7,7 @@ const handleError = (app) => {
     app.use((error, req, res, next) => {
         console.log('ERRO!', req.method, req.path, error);
         if(!res.headersSent) {
-            res.status(500).jsob({
+            res.status(500).json({
                 message: error.message || "Internal error", error
             });
         };

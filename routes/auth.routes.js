@@ -11,7 +11,7 @@ const User = require('../models/User.model');
 
 router.get('/', (req, res, next) => {
     res.json('Test route, all good');
-});
+})
 
 router.post('/signup', async (req, res, next) => {
     const { username, password } = req.body;
@@ -34,8 +34,8 @@ router.post('/signup', async (req, res, next) => {
         }
 
         const hash = bcrypt.hashSync(password, 10);
-        const newUser = await User.create({ username, passwordHash: hash });
-        res.status(201).json({ _id, username: newUser.username });
+        const newUser = await User.create({ username, password: hash });
+        res.status(201).json({ _id: newUser._id, username: newUser.username });
     } catch (error) {
         next(error);
     }
